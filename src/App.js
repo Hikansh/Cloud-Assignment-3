@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { Navbar, Products, Cart, Checkout } from './components';
 import { commerce } from './lib/commerce';
+import Login from './components/Login/Login';
+import Signup from './components/Signup/Signup';
 
 const App = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -34,7 +36,7 @@ const App = () => {
     setCart(response.cart);
   };
 
-  const handleRemoveFromCart = async (lineItemId) => {
+  const handleRemoveFromCart = async lineItemId => {
     const response = await commerce.cart.remove(lineItemId);
 
     setCart(response.cart);
@@ -89,6 +91,12 @@ const App = () => {
               onAddToCart={handleAddToCart}
               handleUpdateCartQty
             />
+          </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/signup">
+            <Signup />
           </Route>
           <Route exact path="/cart">
             <Cart
