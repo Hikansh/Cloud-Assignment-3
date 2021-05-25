@@ -4,6 +4,9 @@ import UserPool from '../../config/UserPool';
 import { Link } from 'react-router-dom';
 import { authContext } from '../../Context/UserContext';
 import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+
+import Button from '@material-ui/core/Button';
 
 import './Login.css';
 
@@ -18,24 +21,24 @@ export default function Login() {
   const submitClicked = () => {
     const user = new CognitoUser({
       Username: id,
-      Pool: UserPool
+      Pool: UserPool,
     });
 
     const authDetails = new AuthenticationDetails({
       Username: id,
-      Password: password
+      Password: password,
     });
 
     user.authenticateUser(authDetails, {
-      onSuccess: data => {
+      onSuccess: (data) => {
         console.log('Success', data);
       },
-      onFailure: data => {
+      onFailure: (data) => {
         console.log('Fail', data);
       },
-      newPasswordRequired: data => {
+      newPasswordRequired: (data) => {
         console.log('password required', data);
-      }
+      },
     });
   };
 
@@ -59,7 +62,7 @@ export default function Login() {
             type="text"
             placeholder="Email"
             value={id}
-            onChange={e => setId(e.target.value)}
+            onChange={(e) => setId(e.target.value)}
           />
           <span className="bar1"></span>
           <br />
@@ -69,19 +72,23 @@ export default function Login() {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <span className="bar2"></span>
           <br />
           <p className="error">{error}</p>
           <br />
-          <button
+
+          <Button
+            variant="contained"
             id="btnLogIn"
             className="btn btn-dark btn-lg"
             onClick={submitClicked}
+            color="secondary"
           >
-            Log in
-          </button>
+            Sign In
+          </Button>
+
           <br />
           <Link to="/signup">Need an account? Sign Up here</Link>
         </div>

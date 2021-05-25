@@ -4,8 +4,11 @@ import { useHistory } from 'react-router-dom';
 import UserPool from '../../config/UserPool';
 import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import VerifyUser from './VerifyUser';
+import { makeStyles } from '@material-ui/core/styles';
 
-// import './Signup.css';
+import Button from '@material-ui/core/Button';
+
+import './Signup.css';
 
 export default function Signup() {
   const [id, setId] = useState('');
@@ -48,7 +51,7 @@ export default function Signup() {
               type="text"
               placeholder="Email"
               value={id}
-              onChange={e => setId(e.target.value)}
+              onChange={(e) => setId(e.target.value)}
             />
             <span className="bar1"></span>
             <br />
@@ -58,7 +61,7 @@ export default function Signup() {
               type="text"
               placeholder="Username"
               value={username}
-              onChange={e => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
             />
             <span className="bar2"></span>
             <br />
@@ -68,17 +71,21 @@ export default function Signup() {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <br />
             <p className="error">{error}</p>
-            <button
+
+            <Button
+              variant="contained"
               id="btnLogIn"
               className="btn btn-dark btn-lg"
               onClick={submitClicked}
+              color="secondary"
             >
               Sign up
-            </button>
+            </Button>
+
             <br />
             <Link to="/login">Already a user? Sign In here</Link>
           </div>
