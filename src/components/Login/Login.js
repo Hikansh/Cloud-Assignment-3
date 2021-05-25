@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import UserPool from '../../config/UserPool';
 import { Link } from 'react-router-dom';
 import { authContext } from '../../Context/UserContext';
 import { useHistory } from 'react-router-dom';
@@ -14,7 +16,27 @@ export default function Login() {
   const [users, setusers] = useState([]);
 
   const submitClicked = () => {
-    //   auth.setUser(users[i]);
+    const user = new CognitoUser({
+      Username: id,
+      Pool: UserPool
+    });
+
+    const authDetails = new AuthenticationDetails({
+      Username: id,
+      Password: password
+    });
+
+    user.authenticateUser(authDetails, {
+      onSuccess: data => {
+        console.log('Success', data);
+      },
+      onFailure: data => {
+        console.log('Fail', data);
+      },
+      newPasswordRequired: data => {
+        console.log('password required', data);
+      }
+    });
   };
 
   return (

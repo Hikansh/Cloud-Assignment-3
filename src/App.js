@@ -6,6 +6,7 @@ import { Navbar, Products, Cart, Checkout } from './components';
 import { commerce } from './lib/commerce';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
+import VerifyUser from './components/Signup/VerifyUser';
 
 const App = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -97,6 +98,9 @@ const App = () => {
           </Route>
           <Route exact path="/signup">
             <Signup />
+          </Route>
+          <Route exact path="/verify-user">
+            <VerifyUser />
           </Route>
           <Route exact path="/cart">
             <Cart
