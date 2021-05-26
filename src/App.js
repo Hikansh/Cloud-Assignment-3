@@ -7,6 +7,10 @@ import { commerce } from './lib/commerce';
 import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 import VerifyUser from './components/Signup/VerifyUser';
+import EditProfile from './components/Profile/EditProfile';
+import Dashboard from './components/Profile/Dashboard';
+import UserContext from './Context/UserContext';
+import UserDetailsContext from './Context/UserDetailsContext';
 
 const App = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -78,49 +82,59 @@ const App = () => {
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
   return (
-    <Router>
-      <div style={{ display: 'flex' }}>
-        <CssBaseline />
-        <Navbar
-          totalItems={cart.total_items}
-          handleDrawerToggle={handleDrawerToggle}
-        />
-        <Switch>
-          <Route exact path="/">
-            <Products
-              products={products}
-              onAddToCart={handleAddToCart}
-              handleUpdateCartQty
+    <UserContext>
+      <UserDetailsContext>
+        <Router>
+          <div style={{ display: 'flex' }}>
+            <CssBaseline />
+            <Navbar
+              totalItems={cart.total_items}
+              handleDrawerToggle={handleDrawerToggle}
             />
-          </Route>
-          <Route exact path="/login">
-            <Login />
-          </Route>
-          <Route exact path="/signup">
-            <Signup />
-          </Route>
-          <Route exact path="/verify-user">
-            <VerifyUser />
-          </Route>
-          <Route exact path="/cart">
-            <Cart
-              cart={cart}
-              onUpdateCartQty={handleUpdateCartQty}
-              onRemoveFromCart={handleRemoveFromCart}
-              onEmptyCart={handleEmptyCart}
-            />
-          </Route>
-          <Route path="/checkout" exact>
-            <Checkout
-              cart={cart}
-              order={order}
-              onCaptureCheckout={handleCaptureCheckout}
-              error={errorMessage}
-            />
-          </Route>
-        </Switch>
-      </div>
-    </Router>
+            <Switch>
+              <Route exact path="/">
+                <Products
+                  products={products}
+                  onAddToCart={handleAddToCart}
+                  handleUpdateCartQty
+                />
+              </Route>
+              <Route exact path="/login">
+                <Login />
+              </Route>
+              <Route exact path="/signup">
+                <Signup />
+              </Route>
+              <Route exact path="/verify-user">
+                <VerifyUser />
+              </Route>
+              <Route exact path="/edit-profile">
+                <EditProfile />
+              </Route>
+              <Route exact path="/dashboard">
+                <Dashboard />
+              </Route>
+              <Route exact path="/cart">
+                <Cart
+                  cart={cart}
+                  onUpdateCartQty={handleUpdateCartQty}
+                  onRemoveFromCart={handleRemoveFromCart}
+                  onEmptyCart={handleEmptyCart}
+                />
+              </Route>
+              <Route path="/checkout" exact>
+                <Checkout
+                  cart={cart}
+                  order={order}
+                  onCaptureCheckout={handleCaptureCheckout}
+                  error={errorMessage}
+                />
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      </UserDetailsContext>
+    </UserContext>
   );
 };
 

@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import UserPool from '../../config/UserPool';
 import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import VerifyUser from './VerifyUser';
+import axios from 'axios';
 
 // import './Signup.css';
 
@@ -14,15 +15,25 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [cognitoUser, setCognitoUser] = useState(null);
   const history = useHistory();
+  const writeAPI = `https://j38uh8wwy8.execute-api.us-east-2.amazonaws.com/stage-2`;
 
   const submitClicked = () => {
-    console.log('Submitted');
     UserPool.signUp(id, password, [], null, function (err, result) {
       if (err) {
         alert(err.message || JSON.stringify(err));
         return;
       }
-      console.log(result);
+      console.log(result.userSub);
+      axios
+        .get(`${writeAPI}?username=${result.userSub}&email=${id}`, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => console.log(res.data.Item))
+        .catch(err => console.log(err));
+
       setCognitoUser(result.user);
     });
   };
@@ -51,16 +62,6 @@ export default function Signup() {
               onChange={e => setId(e.target.value)}
             />
             <span className="bar1"></span>
-            <br />
-            <input
-              id="txtUsername"
-              className="modalInputField"
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
-            />
-            <span className="bar2"></span>
             <br />
             <input
               id="txtPassword"

@@ -29,9 +29,15 @@ export default function Login() {
     user.authenticateUser(authDetails, {
       onSuccess: data => {
         console.log('Success', data);
+        user.getUserAttributes((err, data) => {
+          console.log(data);
+        });
+        auth.setUser(user);
+        history.push('dashboard');
       },
       onFailure: data => {
         console.log('Fail', data);
+        alert(data.message);
       },
       newPasswordRequired: data => {
         console.log('password required', data);
