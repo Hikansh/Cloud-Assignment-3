@@ -5,8 +5,11 @@ import UserPool from '../../config/UserPool';
 import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import VerifyUser from './VerifyUser';
 import axios from 'axios';
+import { makeStyles } from '@material-ui/core/styles';
 
-// import './Signup.css';
+import Button from '@material-ui/core/Button';
+
+import './Signup.css';
 
 export default function Signup() {
   const [id, setId] = useState('');
@@ -73,13 +76,17 @@ export default function Signup() {
             />
             <br />
             <p className="error">{error}</p>
-            <button
+
+            <Button
+              variant="contained"
               id="btnLogIn"
               className="btn btn-dark btn-lg"
               onClick={submitClicked}
+              color="secondary"
             >
               Sign up
-            </button>
+            </Button>
+
             <br />
             <Link to="/login">Already a user? Sign In here</Link>
           </div>
