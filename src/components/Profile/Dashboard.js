@@ -16,20 +16,21 @@ function Dashboard() {
       .get(`${readAPI}?username=${username}`, {
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       })
-      .then(res => {
+      .then((res) => {
         userDetails.setUserDetails(res.data.Item);
         console.log(userDetails.userDetails);
       })
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   }, []);
 
   return (
     <div style={{ marginTop: '100px' }}>
       Welcome, {auth?.user?.username}
-      <Link to="edit-profile">Edit your Profile</Link>
+      <Link to="user-profile">Edit your Profile</Link>
+      {/* <Link to="edit-profile">Edit your Profile</Link> */}
     </div>
   );
 }

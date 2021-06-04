@@ -16,12 +16,12 @@ function EditProfile() {
 
   AWS.config.update({
     accessKeyId: 'AKIARZ7AWDJHZG6F7AU4',
-    secretAccessKey: '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'
+    secretAccessKey: 'SkJCPUPEDF9RwL3+PewqSSXEMwAaF8eoAnhf6qF+',
   });
 
   const myBucket = new AWS.S3({
     params: { Bucket: S3_BUCKET },
-    region: REGION
+    region: REGION,
   });
 
   useEffect(() => {
@@ -31,7 +31,7 @@ function EditProfile() {
     setLastName(userDetails.userDetails.lastName.S || 'Empty');
   }, []);
 
-  const fileChangeHandler = event => {
+  const fileChangeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     console.log(selectedFile);
   };
@@ -47,17 +47,17 @@ function EditProfile() {
         ACL: 'public-read',
         Body: selectedFile,
         Bucket: S3_BUCKET,
-        Key: userDetails.userDetails.username.S + '.jpg' || selectedFile.name
+        Key: userDetails.userDetails.username.S + '.jpg' || selectedFile.name,
       };
 
       // Uploading an image
       myBucket
         .putObject(params)
-        .on('httpUploadProgress', evt => {
+        .on('httpUploadProgress', (evt) => {
           setProgress(Math.round((evt.loaded / evt.total) * 100));
           console.log(progress);
         })
-        .send(err => {
+        .send((err) => {
           if (err) console.log(err);
           else console.log('Success');
         });
@@ -95,20 +95,36 @@ function EditProfile() {
             name="file"
             className=""
             accept="image/*"
-            onChange={e => fileChangeHandler(e)}
+            onChange={(e) => fileChangeHandler(e)}
             style={{ color: 'black' }}
           />
         </p>
         <p>
-          Email: <input type="email" placeholder="Email" value={email} />
+          Email:{' '}
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </p>
         <p>
           First name:{' '}
-          <input type="text" placeholder="First name" value={firstName} />
+          <input
+            type="text"
+            placeholder="First name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
         </p>
         <p>
           Last Name:{' '}
-          <input type="text" placeholder="Last name" value={lastName} />
+          <input
+            type="text"
+            placeholder="Last name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
         </p>
         <button onClick={() => saveBtnClicked()}>Save</button>
       </div>

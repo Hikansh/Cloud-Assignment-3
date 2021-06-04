@@ -8,6 +8,7 @@ import Login from './components/Login/Login';
 import Signup from './components/Signup/Signup';
 import VerifyUser from './components/Signup/VerifyUser';
 import EditProfile from './components/Profile/EditProfile';
+import UserProfile from './components/Profile/UserProfile';
 import Dashboard from './components/Profile/Dashboard';
 import UserContext from './Context/UserContext';
 import UserDetailsContext from './Context/UserDetailsContext';
@@ -41,7 +42,7 @@ const App = () => {
     setCart(response.cart);
   };
 
-  const handleRemoveFromCart = async lineItemId => {
+  const handleRemoveFromCart = async (lineItemId) => {
     const response = await commerce.cart.remove(lineItemId);
 
     setCart(response.cart);
@@ -113,6 +114,9 @@ const App = () => {
               </Route>
               <Route exact path="/dashboard">
                 <Dashboard />
+              </Route>
+              <Route exact path="/user-profile">
+                <UserProfile />
               </Route>
               <Route exact path="/cart">
                 <Cart

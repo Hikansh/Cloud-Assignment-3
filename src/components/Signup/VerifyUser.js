@@ -38,13 +38,18 @@ function VerifyUser({ user }) {
             address you provided.
           </b>
         </h2>
-        <input type="text" />
+        <input
+          type="text"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+        />
         <br></br>
         <Button
           variant="contained"
           id="btnLogIn"
           className="btn btn-dark btn-lg"
           color="secondary"
+          onClick={verify}
         >
           Verify
         </Button>
