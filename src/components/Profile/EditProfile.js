@@ -10,6 +10,7 @@ function EditProfile() {
   const [lastName, setLastName] = useState('');
   const [selectedFile, setSelectedFile] = useState();
   const [progress, setProgress] = useState(0);
+  const [imgUrl, setImgUrl] = useState(null);
 
   const S3_BUCKET = 'cloud-a3-react';
   const REGION = 'us-east-2';
@@ -29,7 +30,8 @@ function EditProfile() {
     setEmail(userDetails.userDetails.email.S || 'Empty');
     setFirstName(userDetails.userDetails.firstName.S || 'Empty');
     setLastName(userDetails.userDetails.lastName.S || 'Empty');
-  }, []);
+    getImageFromS3();
+  }, [editSate]);
 
   const fileChangeHandler = event => {
     setSelectedFile(event.target.files[0]);
@@ -39,6 +41,38 @@ function EditProfile() {
   const editBtnClicked = () => {
     setEditState(true);
   };
+
+  // Getting an img url
+  const getImageFromS3 = () => {
+    var params = {
+      Bucket: S3_BUCKET,
+      Key: userDetails.userDetails.username.S + '.jpg'
+    };
+    myBucket.getObject(params, function (err, data) {
+      if (err) {
+        console.log(err);
+        setImgUrl(null);
+      } else {
+        myBucket.getSignedUrl(
+          'getObject',
+          {
+            Bucket: S3_BUCKET,
+            Key: userDetails.userDetails.username.S + '.jpg'
+          },
+          function (err, url) {
+            if (err) {
+              setImgUrl(null);
+              console.log(err);
+            } else {
+              console.log('Your generated pre-signed URL is', url);
+              setImgUrl(url);
+            }
+          }
+        );
+      }
+    });
+  };
+
   const saveBtnClicked = () => {
     console.log(selectedFile);
     setEditState(false);
@@ -61,21 +95,17 @@ function EditProfile() {
           if (err) console.log(err);
           else console.log('Success');
         });
-
-      // Getting an img url
-      myBucket.getSignedUrl(
-        'getObject',
-        { Bucket: S3_BUCKET, Key: userDetails.userDetails.username.S + '.jpg' },
-        function (err, url) {
-          console.log('Your generated pre-signed URL is', url);
-        }
-      );
     }
   };
 
   const renderNormalSate = () => {
     return (
       <div>
+        <img
+          src={imgUrl === null ? 'images/default.png' : imgUrl}
+          height="150px"
+          width="150px"
+        />
         <p>Email: {email}</p>
         <p>First name: {firstName}</p>
         <p>Last Name: {lastName}</p>
@@ -88,7 +118,11 @@ function EditProfile() {
     return (
       <div>
         <p>
-          <img src="images/default.png" height="150px" width="150px" />
+          <img
+            src={imgUrl === null ? 'images/default.png' : imgUrl}
+            height="150px"
+            width="150px"
+          />
           Change Profile pic
           <input
             type="file"
