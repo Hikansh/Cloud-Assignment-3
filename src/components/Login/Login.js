@@ -49,54 +49,56 @@ export default function Login() {
   };
 
   return (
-    <div className="main-container">
-      <div className="img-div">
-        <img
-          alt=""
-          src="https://img.icons8.com/cotton/48/000000/login-rounded-right--v2.png"
-        />
-      </div>
-      <div className="login-text">
-        <h1>Log In</h1>
-      </div>
-      <br />
-      <div className="form-container">
-        <div className="form-div">
-          <input
-            id="txtEmail"
-            className="modalInputField"
-            type="text"
-            placeholder="Email"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+    <div className="body-login">
+      <div className="main-container">
+        <div className="img-div">
+          <img
+            alt=""
+            src="https://img.icons8.com/cotton/48/000000/login-rounded-right--v2.png"
           />
-          <span className="bar1"></span>
-          <br />
-          <input
-            id="txtPassword"
-            className="modalInputField"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <span className="bar2"></span>
-          <br />
-          <p className="error">{error}</p>
-          <br />
+        </div>
+        <div className="login-text">
+          <h1>Log In</h1>
+        </div>
+        <br />
+        <div className="form-container">
+          <div className="form-div">
+            <input
+              id="txtEmail"
+              className="modalInputField"
+              type="text"
+              placeholder="Email"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+            />
+            <span className="bar1"></span>
+            <br />
+            <input
+              id="txtPassword"
+              className="modalInputField"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <span className="bar2"></span>
+            <br />
+            <p className="error">{error}</p>
+            <br />
 
-          <Button
-            variant="contained"
-            id="btnLogIn"
-            className="btn btn-dark btn-lg"
-            onClick={submitClicked}
-            color="secondary"
-          >
-            Sign In
-          </Button>
+            <Button
+              variant="contained"
+              id="btnLogIn"
+              className="btn btn-dark btn-lg"
+              onClick={submitClicked}
+              color="secondary"
+            >
+              Sign In
+            </Button>
 
-          <br />
-          <Link to="/signup">Need an account? Sign Up here</Link>
+            <br />
+            <Link to="/signup">Need an account? Sign Up here</Link>
+          </div>
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import EditProfile from './components/Profile/EditProfile';
 import Dashboard from './components/Profile/Dashboard';
 import UserContext from './Context/UserContext';
 import UserDetailsContext from './Context/UserDetailsContext';
+import UserProfile from './components/Profile/UserProfile';
 
 const App = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -41,7 +42,7 @@ const App = () => {
     setCart(response.cart);
   };
 
-  const handleRemoveFromCart = async lineItemId => {
+  const handleRemoveFromCart = async (lineItemId) => {
     const response = await commerce.cart.remove(lineItemId);
 
     setCart(response.cart);
@@ -113,6 +114,9 @@ const App = () => {
               </Route>
               <Route exact path="/dashboard">
                 <Dashboard />
+              </Route>
+              <Route exact path="/user">
+                <UserProfile />
               </Route>
               <Route exact path="/cart">
                 <Cart

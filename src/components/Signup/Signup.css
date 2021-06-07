@@ -1,20 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Molle:ital@1&display=swap');
 
-body {
+.body-signup {
   color: rgb(39, 39, 39);
-  background: rgb(2, 0, 36);
-  background: linear-gradient(
-    352deg,
-    rgba(2, 0, 36, 1) 0%,
-    rgba(148, 113, 152, 1) 33%,
-    rgba(244, 100, 178, 1) 65%,
-    rgba(244, 223, 240, 1) 84%,
-    rgba(246, 189, 230, 1) 100%,
-    rgba(0, 212, 255, 1) 100%
-  );
+  /* background: rgb(2, 0, 36); */
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('../../images/pexels-andrea-piacquadio-3769747.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   min-height: 100vh;
   font-family: 'Space Grotesk', sans-serif;
+  width: 100%;
 }
 
 header {
@@ -37,6 +35,7 @@ header a {
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   margin: auto;
+  margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;

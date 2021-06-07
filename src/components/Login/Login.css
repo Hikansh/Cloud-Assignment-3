@@ -2,9 +2,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Molle:ital@1&display=swap');
 
 body {
-  background: rgb(136, 213, 218);
+  /* background: rgb(136, 213, 218); */
   color: rgb(39, 39, 39);
   font-family: 'Space Grotesk', sans-serif;
+}
+
+.body-login {
+  color: rgb(39, 39, 39);
+  /* background: rgb(2, 0, 36); */
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('../../images/pexels-andrea-piacquadio-3769747.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  font-family: 'Space Grotesk', sans-serif;
+  width: 100%;
 }
 
 header {
@@ -20,7 +34,7 @@ header a {
 .main-container {
   width: 400px;
   height: 500px;
-  background: rgba(255, 255, 255, 0.5);
+  /* background: rgba(255, 255, 255, 0.5); */
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(0.3px);
   -webkit-backdrop-filter: blur(0.3px);
@@ -55,7 +69,7 @@ header a {
 input {
   background: transparent;
   color: #080808;
-  font-size: 18px;
+  font-size: 12px;
   padding: 10px 10px 10px 5px;
   display: block;
   width: 320px;
