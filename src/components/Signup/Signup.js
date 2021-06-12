@@ -31,11 +31,11 @@ export default function Signup() {
         .get(`${writeAPI}?username=${result.userSub}&email=${id}`, {
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
+            'Content-Type': 'application/json'
+          }
         })
-        .then((res) => console.log(res.data.Item))
-        .catch((err) => console.log(err));
+        .then(res => console.log(res.data.Item))
+        .catch(err => console.log(err));
 
       setCognitoUser(result.user);
     });
@@ -43,58 +43,61 @@ export default function Signup() {
 
   return (
     <>
-      <div className="body-signup">
-        <div className="main-container">
-          <div className="img-div">
-            <img
-              alt=""
-              src="https://img.icons8.com/officel/40/000000/change-user-male.png"
-            />
-          </div>
-          <div className="login-text">
-            <h1>Sign Up</h1>
-          </div>
-          <br />
-          <div className="form-container">
-            <div className="form-div">
-              <input
-                id="txtEmail"
-                className="modalInputField"
-                type="text"
-                placeholder="Email"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
+      {cognitoUser ? (
+        <VerifyUser user={cognitoUser} />
+      ) : (
+        <div className="body-signup">
+          <div className="main-container">
+            <div className="img-div">
+              <img
+                alt=""
+                src="https://img.icons8.com/officel/40/000000/change-user-male.png"
               />
-              <span className="bar1"></span>
-              <br />
-              <input
-                id="txtPassword"
-                className="modalInputField"
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <br />
-              <p className="error">{error}</p>
+            </div>
+            <div className="login-text">
+              <h1>Sign Up</h1>
+            </div>
+            <br />
+            <div className="form-container">
+              <div className="form-div">
+                <input
+                  id="txtEmail"
+                  className="modalInputField"
+                  type="text"
+                  placeholder="Email"
+                  value={id}
+                  onChange={e => setId(e.target.value)}
+                />
+                <span className="bar1"></span>
+                <br />
+                <input
+                  id="txtPassword"
+                  className="modalInputField"
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+                <br />
+                <p className="error">{error}</p>
 
-              <Button
-                variant="contained"
-                id="btnLogIn"
-                className="btn btn-dark btn-lg"
-                onClick={submitClicked}
-                color="secondary"
-              >
-                Sign up
-              </Button>
+                <Button
+                  variant="contained"
+                  id="btnLogIn"
+                  className="btn btn-dark btn-lg"
+                  onClick={submitClicked}
+                  color="secondary"
+                >
+                  Sign up
+                </Button>
 
-              <br />
-              <Link to="/login">Already a user? Sign In here</Link>
+                <br />
+                <Link to="/login">Already a user? Sign In here</Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {cognitoUser && <VerifyUser user={cognitoUser} />}
+      )}
     </>
   );
 }

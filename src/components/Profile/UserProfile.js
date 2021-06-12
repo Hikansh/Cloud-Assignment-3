@@ -7,14 +7,11 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Image from '../../images/pexels-michelle-leman-6774558.jpg';
-import {
-  Avatar,
-  IconButton,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@material-ui/core';
+import { IconButton, TextField, Tooltip, Typography } from '@material-ui/core';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import axios from 'axios';
+import { useHistory } from 'react-router';
+import apiUrl from '../../config/env';
 
 const useStyles = makeStyles({
   containerDiv: {
@@ -27,7 +24,7 @@ const useStyles = makeStyles({
     backgroundPosition: 'center center',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    backgroundAttachment: 'fixed',
+    backgroundAttachment: 'fixed'
   },
   root: {
     width: '40%',
@@ -35,24 +32,24 @@ const useStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    marginTop: '80px',
+    marginTop: '80px'
   },
   bullet: {
     display: 'inline-block',
     margin: '0 2px',
-    transform: 'scale(0.8)',
+    transform: 'scale(0.8)'
   },
   title: {
-    fontSize: 14,
+    fontSize: 14
   },
   pos: {
-    marginBottom: 12,
+    marginBottom: 12
   },
   large: {
     width: 200,
     height: 200,
     borderRadius: '50%',
-    border: '1px solid black',
+    border: '1px solid black'
   },
   cardContent: {
     display: 'flex',
@@ -60,17 +57,16 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     flexDirection: 'row',
     width: '80%',
-    color: 'black',
+    color: 'black'
   },
 
   input: {
-    display: 'none',
-  },
+    display: 'none'
+  }
 });
 
 function UserProfile() {
   const classes = useStyles();
-  // const [selectedFile, setSelectedFile] = React.useState(null);
   const [editSate, setEditState] = useState(false);
   const userDetails = useContext(userDetailsContext);
   const [email, setEmail] = useState('');
@@ -79,6 +75,8 @@ function UserProfile() {
   const [selectedFile, setSelectedFile] = useState();
   const [progress, setProgress] = useState(0);
   const [imgUrl, setImgUrl] = useState(null);
+  let userData = null;
+  const history = useHistory();
 
   const handleCapture = ({ target }) => {
     setSelectedFile(target.files[0]);
@@ -89,23 +87,46 @@ function UserProfile() {
 
   AWS.config.update({
     accessKeyId: 'AKIARZ7AWDJHZG6F7AU4',
-    secretAccessKey: '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',
+    secretAccessKey: 'SkJCPUPEDF9RwL3+PewqSSXEMwAaF8eoAnhf6qF+'
   });
 
   const myBucket = new AWS.S3({
     params: { Bucket: S3_BUCKET },
-    region: REGION,
+    region: REGION
   });
 
+  const getUserDetailsFromBackend = async () => {
+    userData = await axios.get(apiUrl + '/user/getUserDetails');
+    userDetails.setUserDetails(userData.data.userDetails);
+  };
+
   useEffect(() => {
-    console.log(userDetails);
-    setEmail(userDetails.userDetails.email.S || 'Empty');
-    setFirstName(userDetails.userDetails.firstName.S || 'Empty');
-    setLastName(userDetails.userDetails.lastName.S || 'Empty');
-    getImageFromS3();
+    // if (!userDetails.userDetails) {
+    getUserDetailsFromBackend().then(() => {
+      console.log(userDetails);
+      setEmail(
+        userDetails?.userDetails?.email.S ||
+          userData.data.userDetails.email.S ||
+          'Empty'
+      );
+      setFirstName(
+        userDetails?.userDetails?.firstName?.S ||
+          userData?.data?.userDetails?.firstName?.S ||
+          'Empty'
+      );
+      setLastName(
+        userDetails?.userDetails?.lastName.S ||
+          userData.data.userDetails.lastName.S ||
+          'Empty'
+      );
+      getImageFromS3();
+    });
+    // } else {
+    //   console.log('here');
+    // }
   }, [editSate]);
 
-  const fileChangeHandler = (event) => {
+  const fileChangeHandler = event => {
     setSelectedFile(event.target.files[0]);
     console.log(selectedFile);
   };
@@ -118,7 +139,9 @@ function UserProfile() {
   const getImageFromS3 = () => {
     var params = {
       Bucket: S3_BUCKET,
-      Key: userDetails.userDetails.username.S + '.jpg',
+      Key:
+        (userDetails?.userDetails?.username?.S ||
+          userData.data.userDetails.username.S) + '.jpg'
     };
     myBucket.getObject(params, function (err, data) {
       if (err) {
@@ -129,7 +152,9 @@ function UserProfile() {
           'getObject',
           {
             Bucket: S3_BUCKET,
-            Key: userDetails.userDetails.username.S + '.jpg',
+            Key:
+              (userDetails?.userDetails?.username.S ||
+                userData.data.userDetails.username.S) + '.jpg'
           },
           function (err, url) {
             if (err) {
@@ -153,21 +178,43 @@ function UserProfile() {
         ACL: 'public-read',
         Body: selectedFile,
         Bucket: S3_BUCKET,
-        Key: userDetails.userDetails.username.S + '.jpg' || selectedFile.name,
+        Key:
+          (userDetails.userDetails.username.S ||
+            userData.data.userDetails.username.S) + '.jpg' || selectedFile.name
       };
 
       // Uploading an image
       myBucket
         .putObject(params)
-        .on('httpUploadProgress', (evt) => {
+        .on('httpUploadProgress', evt => {
           setProgress(Math.round((evt.loaded / evt.total) * 100));
           console.log(progress);
         })
-        .send((err) => {
+        .send(err => {
           if (err) console.log(err);
           else console.log('Success');
         });
     }
+    console.log('Sending data:', {
+      username:
+        userDetails.userDetails.username.S ||
+        userData.data.userDetails.username.S,
+      email: email,
+      firstName: firstName,
+      lastName: lastName
+    });
+    axios
+      .post(apiUrl + '/user/updateUserDetails', {
+        username:
+          userDetails.userDetails.username.S ||
+          userData.data.userDetails.username.S,
+        email: email,
+        firstName: firstName,
+        lastName: lastName
+      })
+      .then(res => {
+        history.push('dashboard');
+      });
   };
 
   const renderNormalSate = () => {
@@ -253,16 +300,17 @@ function UserProfile() {
             <TextField
               id="outlined-basic"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              // onChange={e => setEmail(e.target.value)}
               variant="outlined"
               style={{ width: '70%' }}
+              readOnly={true}
             />
           </CardContent>
           <CardContent className={classes.cardContent}>
             <TextField
               id="outlined-basic"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={e => setFirstName(e.target.value)}
               variant="outlined"
               style={{ width: '70%' }}
             />
@@ -271,7 +319,7 @@ function UserProfile() {
             <TextField
               id="outlined-basic"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={e => setLastName(e.target.value)}
               variant="outlined"
               style={{ width: '70%' }}
             />

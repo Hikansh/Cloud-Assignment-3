@@ -4,7 +4,8 @@ import UserPool from '../../config/UserPool';
 import { Link } from 'react-router-dom';
 import { authContext } from '../../Context/UserContext';
 import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+import apiUrl from '../../config/env';
 
 import Button from '@material-ui/core/Button';
 
@@ -21,30 +22,35 @@ export default function Login() {
   const submitClicked = () => {
     const user = new CognitoUser({
       Username: id,
-      Pool: UserPool,
+      Pool: UserPool
     });
 
     const authDetails = new AuthenticationDetails({
       Username: id,
-      Password: password,
+      Password: password
     });
 
     user.authenticateUser(authDetails, {
-      onSuccess: (data) => {
+      onSuccess: data => {
         console.log('Success', data);
         user.getUserAttributes((err, data) => {
           console.log(data);
         });
         auth.setUser(user);
+        axios
+          .post(apiUrl + '/user/setUser', {
+            user: user
+          })
+          .then(res => console.log(res));
         history.push('dashboard');
       },
-      onFailure: (data) => {
+      onFailure: data => {
         console.log('Fail', data);
         alert(data.message);
       },
-      newPasswordRequired: (data) => {
+      newPasswordRequired: data => {
         console.log('password required', data);
-      },
+      }
     });
   };
 
@@ -69,7 +75,7 @@ export default function Login() {
               type="text"
               placeholder="Email"
               value={id}
-              onChange={(e) => setId(e.target.value)}
+              onChange={e => setId(e.target.value)}
             />
             <span className="bar1"></span>
             <br />
@@ -79,7 +85,7 @@ export default function Login() {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
             />
             <span className="bar2"></span>
             <br />

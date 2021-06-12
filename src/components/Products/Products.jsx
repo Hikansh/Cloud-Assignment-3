@@ -1,19 +1,11 @@
 import React, { useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
-
+import axios from 'axios';
 import Product from './Product/Product';
 import useStyles from './styles';
 
 const Products = ({ products, onAddToCart }) => {
   const classes = useStyles();
-
-  useEffect(() => {
-    fetch(
-      'http://cloud3backend-env.eba-gnbtkmeb.us-east-2.elasticbeanstalk.com/'
-    )
-      .then(res => res.json())
-      .then(re => console.log(re));
-  });
 
   if (!products.length) return <p>Loading...</p>;
 
