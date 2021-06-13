@@ -13,9 +13,9 @@ function Dashboard() {
   let userData = null;
 
   const getUserFromBackend = async () => {
-    auth.setUser(null);
+    // auth.setUser(null);
     userData = await axios.get(apiUrl + '/user/getUser');
-    auth.setUser(userData.data.user);
+    // auth.setUser(userData.data.user);
   };
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function Dashboard() {
     // console.log('Here');
     getUserFromBackend().then(() => {
       console.log(userData);
-      let username = auth.user?.username || userData.data.user.username;
+      let username = auth?.user?.username || userData.data.user.username;
       console.log(username);
       axios
         .get(`${readAPI}?username=${username}`, {
