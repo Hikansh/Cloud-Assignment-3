@@ -13,6 +13,7 @@ function Dashboard() {
   let userData = null;
 
   const getUserFromBackend = async () => {
+    auth.setUser(null);
     userData = await axios.get(apiUrl + '/user/getUser');
     auth.setUser(userData.data.user);
   };
