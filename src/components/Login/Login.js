@@ -6,6 +6,8 @@ import { authContext } from '../../Context/UserContext';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import apiUrl from '../../config/env';
+import FacebookLogin from 'react-facebook-login';
+import GitHubLogin from 'react-github-login';
 
 import Button from '@material-ui/core/Button';
 
@@ -18,6 +20,36 @@ export default function Login() {
   const auth = useContext(authContext);
   const history = useHistory();
   const [users, setusers] = useState([]);
+  const writeAPI = `https://j38uh8wwy8.execute-api.us-east-2.amazonaws.com/stage-2`;
+
+  const responseFacebook = response => {
+    console.log(response);
+    let ud = {
+      username: response.id,
+      email: response.email
+    };
+    auth.setUser(ud);
+    axios
+      .get(`${writeAPI}?username=${ud.username}&email=${ud.email}`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(res => console.log(res.data.Item))
+      .catch(err => console.log(err));
+    axios
+      .post(apiUrl + '/user/setUser', {
+        user: ud
+      })
+      .then(res => console.log(res));
+
+    history.push('dashboard');
+  };
+
+  const componentClicked = data => {
+    console.log(data);
+  };
 
   const submitClicked = () => {
     const user = new CognitoUser({
@@ -101,6 +133,14 @@ export default function Login() {
             >
               Sign In
             </Button>
+            <br />
+            <FacebookLogin
+              appId="985837868828213"
+              autoLoad={true}
+              fields="name,email,picture"
+              onClick={componentClicked}
+              callback={responseFacebook}
+            />
 
             <br />
             <Link to="/signup">Need an account? Sign Up here</Link>

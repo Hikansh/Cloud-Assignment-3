@@ -1,5 +1,5 @@
-// const env = 'production';
-const env = 'development';
+const env = 'production';
+// const env = 'development';
 let apiUrl = '';
 if (env === 'development') {
   apiUrl = 'http://localhost:8081';

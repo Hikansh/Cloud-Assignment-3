@@ -113,6 +113,7 @@ const PrimarySearchAppBar = ({ totalItems }) => {
                   <MenuItem
                     onClick={() => {
                       auth.setUser(null);
+                      window.FB.logout();
                       history.push('/');
                       handleClose();
                     }}
