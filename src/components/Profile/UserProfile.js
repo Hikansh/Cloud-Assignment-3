@@ -86,8 +86,8 @@ function UserProfile() {
   const REGION = 'us-east-2';
 
   AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_ACCESS_KEY_SECRET_ID
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.ACCESS_KEY_SECRET_ID
   });
 
   const myBucket = new AWS.S3({
